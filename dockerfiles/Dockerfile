@@ -1,11 +1,9 @@
-FROM redis:5.0.5-alpine
+FROM redis:7.0.0-alpine
 
 RUN apk --no-cache upgrade && \
 	apk add --no-cache --update \
 	python3 \
 	python3-dev \
-	python2-dev \
-	py2-pip \
 	gcc \
 	libc-dev \
 	libffi-dev \
@@ -20,16 +18,17 @@ RUN apk --no-cache upgrade && \
 	g++ \
 	git \
 	curl && \
-	pip3 install --upgrade pip && \
+	curl https://bootstrap.pypa.io/get-pip.py --output /tmp/get-pip.py && \
+	python3 /tmp/get-pip.py && \
 	rm -rf /tmp/* && \
 	rm -rf /var/cache/apk/* && \
 	ssh-keygen -f /etc/ssh/ssh_host_rsa_key -N '' -t rsa && \
 	mkdir -p /var/run/sshd && \
 	mkdir -p /root/.ssh && \
 	chmod 0700 /root/.ssh && \
-	passwd -u root && \
+	passwd -u root || true && \
 	# install dependencies of conductor2 used by perf
-	pip2 install filelock twisted requests queuelib ujson psutil crochet msgpack-python unidecode attrdict service_identity
+	pip3 install filelock twisted requests queuelib ujson psutil crochet msgpack-python unidecode attrdict service_identity
 
 COPY dockerfiles/sshd_config /etc/ssh/sshd_config
 COPY dockerfiles/entrypoint.sh /sbin/entrypoint.sh
