@@ -1,3 +1,9 @@
+# THIS IS AN UNOFFICIAL FORK
+
+The project doesn't seem to be actively maintained by splunk anymore.
+After reaching out to the maintainers and no response I created this fork.
+I apply changes here for my own usage, use at your own risk.
+
 # Splunk Event Generator (Eventgen)
 
 ### Status
